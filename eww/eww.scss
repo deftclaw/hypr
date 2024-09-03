@@ -1,0 +1,103 @@
+$surface-darkgrey:  #1D1F21;
+$surface-fg:        #FCFCFC;
+$surface-lightgrey: #3D464E;
+$surface-grey:      #2B3238;
+$surface-red:       #9B111E;
+
+* { all: unset; }
+
+.active {
+}
+
+.clock {
+  font-weight: 600;
+  padding-left: 1em;
+  padding-right: 0.4em;
+}
+
+.layout-box {
+  background-repeat: no-repeat;
+  background-size:   contain;
+  padding-left:      0.25em;
+  padding:           0.25em;
+}
+
+.net-box {
+  label {
+    font-size: 2em;
+    padding-right: 0.2em;
+  }
+}
+.bat-box,
+.tm-box {
+  label {
+    font-size: 2em;
+    padding-right: 0.2em;
+  }
+}
+
+.close-btn {
+  font-size: 2em;
+  padding-left: 0.1em;
+  color: $surface-fg;
+
+  &:hover {
+    color: $surface-red;
+  }
+}
+
+
+.btns-box {
+  font-size: 3em;
+
+  button {
+    background-color: rgba($surface-darkgrey, 0.3);
+    border-radius: 0.1em;
+    padding: 0.4em;
+
+    &:hover {
+      transition: 200ms linear background-color, border-radius;
+      background-color: rgba($surface-lightgrey, 0.6);
+    }
+
+    &:first-child {
+      color: rgba($surface-red, 0.8);
+    }
+  }
+}
+
+.right-bar {
+  background-color: rgba($surface-darkgrey, 0.72);
+  border-radius: 4px;
+  color: #FCFCFC;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+
+.left-bar {
+  background-color: rgba($surface-grey, 0.72);
+  border-radius: 4px;
+  color: #FCFCFC;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+
+.sep {
+  color: $surface-lightgrey;
+  font-family: Iosevka;
+  font-size: 1em;
+  font-weight: 400;
+  padding-left: 0.2em;
+  padding-right: 0.2em;
+  padding-top: 0.15em;
+}
+
+.sundial-lbl {
+  border-radius: 0.2em;
+  font-family: "Poiret One";
+  font-size: 1em;
+  font-weight: bold;
+  padding: 0.4em;
+  padding-bottom: 0.5em;
+  padding-right: 1em;
+}

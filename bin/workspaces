@@ -1,0 +1,47 @@
+#!/usr/bin/env ruby
+
+require 'json'
+
+LD = {
+  desc:     -> (row) { row.split(/:\s/)[1..-1].join(' ')  },
+  mon_name: -> (row) { row.gsub(/\:/, '').split(/\s/)[-1] },
+  sid:      -> (row) { LD[:second].call(row).to_i         },
+  second:   -> (row) { row.split(/\s/)[1]                 },
+  wsid:     -> (row) { row.split(/\s/)[2].to_i            }
+}
+
+def workspace_info
+  table = `hyprctl workspaces`.split(/\n/).map{|r| r.gsub(/\t/, '')}.compact
+  table.delete("")
+
+  idx        = 0
+  workspaces = {}
+
+  while idx < table.count do
+    workspaces.merge!(parse_command(table.shift(6)))
+  end
+
+  print workspaces.to_json
+end
+
+def parse_command(list)
+  wsid = LD[:wsid].call(list[0])
+
+  {
+    "WS#{wsid}".to_sym => {
+      id: wsid,
+      monitor: {
+        id:   LD[:sid].call(list[1]),
+        name: LD[:mon_name].call(list[0])
+      },
+      windows_count:   LD[:sid].call(list[2]),
+      has_full_screen: LD[:sid].call(list[3]),
+      last_window: {
+        id:    LD[:second].call(list[4]),
+        title: LD[:desc].call(list[5])
+      }
+    }
+  }
+end
+
+workspace_info

@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+require 'json'
+
+LENGTH_LIMIT = ARGV[0].to_i > 0 ? ARGV[0].to_i : 99
+
+LD = {
+  current: ->{
+    JSON.parse(`hyprctl clients -j`)
+        .select{ |window| window["focusHistoryID"] == 0 }
+        .first
+  }
+}
+
+puts LD[:current].call["title"].chars.first(LENGTH_LIMIT).join('')
