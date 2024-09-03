@@ -1,0 +1,82 @@
+#!/usr/bin/bash
+
+# Import external tools
+. ./lib/aurl.sh
+. ./lib/reply.sh
+
+function install_hyprland() {
+  # Exit if no rust
+  [[ `cargo version` ]] || reply -e 'Please install rust and try again'
+  
+  # Store dependencies in order
+  list=(`cat deps/hypr.list`)
+  
+  # Don't try to install hyprland if it exists
+  if [[ ! `pacman -Q|grep hyprland` ]]
+  then
+    # Install hyprland-git and dependencies in order
+    for pkg in ${list[@]}
+    do
+      aurl "$pkg"
+    done
+  fi
+
+  reply -i 'Hyprland Installed'
+  
+  # Clean up the directory
+  rm -rf *git*
+  
+  if [[ ! `eww -V` ]]
+  then
+    sudo pacman -Sy --noconfirm `cat deps/eww.list`
+    git clone --depth 1 https://github.com/elkowar/eww
+    pushd eww
+      cargo build --release --no-default-features --features=wayland
+      sudo mv target/release /opt/eww
+      sudo ln -si /opt/eww/eww /usr/bin/eww
+    popd
+  fi
+
+  reply -i 'eww Installed'
+}
+
+function configure_hyprland() {
+  XH=${XDG_CONFIG_HOME:-$HOME/.config}
+  
+  # Decide where to install the eww scripts
+  case $PATH in
+    *$HOME/.local/bin*)
+        bin_path=$HOME/.local/
+        sd=$false
+      ;;
+    */usr/local/bin*)
+        bin_path=/usr/local/
+        sd=$true
+      ;;
+    */usr/bin*)
+        bin_path=/usr/
+        sd=$true
+      ;;
+    *)
+        bin_path=/
+        sd=$true
+      ;;
+  esac
+
+  tar -C $XH -xf config.tbz2 ./eww 
+  tar -C $XH -xf config.tbz2 ./hypr
+
+  # Only use sudo if ~/.local/bin is not in the $PATH
+  if [[ $sd ]] 
+  then
+    sudo tar -C $bin_path/ -xf config.tbz2 ./bin
+  else 
+    tar -C $bin_path/ -xf config.tbz2 ./bin
+  fi
+
+  reply -i "Hyprland and eww configs installed in $XH"
+  reply -i "eww scripts installed to $bin_path"
+}
+
+install_hyprland
+configure_hyprland
