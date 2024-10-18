@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+if `mpc`.match?(/\[playing\]/) then
+  `mpc pause`
+else
+  `mpc play`
+end
