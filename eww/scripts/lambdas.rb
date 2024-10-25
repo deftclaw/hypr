@@ -16,3 +16,9 @@ LD = {
   wsid:     -> (row) { row.split(/\s/)[2].to_i            }
 }
 
+LN = { is_zero: ->(val) { vs = val.to_s ; ( vs == '0' || vs == '0.0' ) } }
+LP = { value: ->(prop) { prop.split(/\:\s/)[-1] } }
+LW = { break_out: ->{ `hyprctl clients`.split(/\n/).reject!{|r| r.empty?}.map{|r| r.gsub(/\t/, ' - ')}.each_slice(22).to_a } }
+
+LW[:active_ws] = ->{ LW[:break_out].call.map{|ws| LP[:value].(ws[5]).to_i}.uniq.sort }
+LW[:focus_w]   = ->{ LW[:break_out].call.each_with_index.select{|r, rdx| LN[:is_zero].(LP[:value].(r[-1]))}.flatten }

@@ -1,0 +1,6 @@
+#!/usr/bin/bash
+
+work_dir=/tmp/eww_vars
+
+[[ -d "$work_dir" ]] || install -m 664 -d "$work_dir"  # Create the directory with specified permissions (no entry, just rw)
+
