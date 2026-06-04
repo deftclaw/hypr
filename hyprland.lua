@@ -41,18 +41,26 @@ local fileManager = "pcmanfm"
 local menu        = "rofi -show drun"
 local webBrowser  = "brave"
 
---################
---## AUTOSTART ###
---################
+-----------------
+--- AUTOSTART ---
+-----------------
 
 -- Autostart necessary processes (like notifications daemons, status bars, etc.)
 -- Or execute your favorite apps at launch like this:
 
-exec-once = hyprpaper -c $XH/hypr/config.d/hyprpaper.conf
-exec-once = bash -c $XH/eww/scripts/start_ws_mon
-exec-once = bash -c $XH/eww/scripts/rebar
-exec-once = dunst -config $XH/dunst/dunstrc
-exec-once = hyprlock -c $XH/hypr/config.d/lock/login.conf
+-- exec-once = hyprpaper -c $XH/hypr/config.d/hyprpaper.conf
+-- exec-once = bash -c $XH/eww/scripts/start_ws_mon
+-- exec-once = bash -c $XH/eww/scripts/rebar
+-- exec-once = dunst -config $XH/dunst/dunstrc
+-- exec-once = hyprlock -c $XH/hypr/config.d/lock/login.conf
+
+hl.on("hyprland.start", function ()
+	hl.exec_cmd("hyprpaper -c $XH/hypr/config.d/hyprpaper.conf")
+	hl.exec_cmd("bash -c $XH/eww/scripts/start_ws_mon")
+	hl.exec_cmd("bash -c $XH/eww/scripts/rebar")
+	hl.exec_cmd("dunst -config $XH/dunst/dunstrc")
+	hl.exec_cmd("hyprlock -c $XH/hypr/config.d/lock/login.conf")
+end)
 
 
 --##################
