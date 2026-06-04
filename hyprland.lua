@@ -36,11 +36,12 @@ require('monitors')
 -- See https://wiki.hypr.land/Configuring/Keywords/
 
 -- Set programs that you use
-local fileManager = "pcmanfm"
-local mainMod     = "SUPER" -- Sets "Windows" key as main modifier
-local menu        = "rofi -show drun"
-local terminal    = "st"
-local webBrowser  = "brave"
+local closeWindowBind  = hl.bind(mainMod .. " + Q", hl.dsp.window.close())
+local fileManager      = "pcmanfm"
+local mainMod          = "SUPER" -- Sets "Windows" key as main modifier
+local menu             = "rofi -show drun"
+local terminal         = "st"
+local webBrowser       = "brave"
 
 -----------------
 --- AUTOSTART ---
@@ -274,84 +275,102 @@ hl.device({
 --- KEYBINDINGS ---
 -------------------
 
-bind = $mainMod, Return, exec, $terminal
-bind = $mainMod, B, exec, $webBrowser
-bind = $mainMod SHIFT, P, exec, eww open power_menu
-bind = $mainMod SHIFT, x, exec, $HOME/.local/bin/lock
-bind = $mainMod, E, exec, $fileManager
-bind = $mainMod, D, exec, $menu
-bind = $mainMod, R, exec, rofi -show run
-bind = $mainMod, mouse:274, exec, $HOME/.local/bin/dunst-playback
 
---# Group windows ##
-bind = $mainMod, t, togglegroup
--- bind = $mainMod, TAB, layout, togglesplit  # dwindle
+-- bind = $mainMod, Return, exec, $terminal
+-- bind = $mainMod, B, exec, $webBrowser
+-- bind = $mainMod, E, exec, $fileManager
+-- bind = $mainMod, D, exec, $menu
+-- bind = $mainMod, R, exec, rofi -show run
+-- bind = $mainMod SHIFT, P, exec, eww open power_menu
+-- bind = $mainMod SHIFT, x, exec, $HOME/.local/bin/lock
+-- bind = $mainMod, mouse:274, exec, dunst-playback
 
---## Move to the other members of an active group
-bind = $mainMod ALT, h, changegroupactive, b
-bind = $mainMod ALT, l, changegroupactive, f
+hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
+hl.bind(mainMod .. " + B",      hl.dsp.exec_cmd(webBrowser))
+hl.bind(mainMod .. " + E",      hl.dsp.exec_cmd(fileManager))
+hl.bind(mainMod .. " + D",      hl.dsp.exec_cmd(menu))
+hl.bind(mainMod .. " + R", hl.dsp.exec_cmd("rofi -show run"))
+hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd("eww open power_menu"))
+hl.bind(mainMod .. " + SHIFT + x", hl.dsp.exec_cmd("lock"))
+hl.bind(mainMod .. " + mouse:274", hl.dsp.exec_cmd("dunst-playback"))
 
--- Move focus with mainMod + arrow keys
-bind = $mainMod, l, movefocus, r
-bind = $mainMod, h, movefocus, l
-bind = $mainMod, k, movefocus, u
-bind = $mainMod, j, movefocus, d
+-- Group windows --
+hl.bind(mainMod .. " + T",   hl.dsp.group.toggle())         -- bind = $mainMod, t, togglegroup
+hl.bind(mainMod .. " + TAB", hl.dsp.layout("togglesplit"))  -- bind = $mainMod, TAB, layout, togglesplit  # dwindle
+
+-- Move to the other members of an active group --
+hl.bind(mainMod .. " + H", hl.dsp.group.prev())  -- bind = $mainMod ALT, h, changegroupactive, b
+hl.bind(mainMod .. " + L", hl.dsp.group.next())  -- bind = $mainMod ALT, l, changegroupactive, f
+
+-- Move focus with mainMod + vim directions
+hl.bind(mainMod .. " + L", hl.dsp.focus({ direction = "right" }))  -- bind = $mainMod, l, movefocus, r
+hl.bind(mainMod .. " + H", hl.dsp.focus({ direction = "left"  }))  -- bind = $mainMod, h, movefocus, l
+hl.bind(mainMod .. " + K", hl.dsp.focus({ direction = "up"    }))  -- bind = $mainMod, k, movefocus, u
+hl.bind(mainMod .. " + J", hl.dsp.focus({ direction = "down"  }))  -- bind = $mainMod, j, movefocus, d
 
 -- Resize Windows with mod+ctl [h, j, k, l]
-bind = $mainMod CTRL, h, resizeactive, -50 0
-bind = $mainMod CTRL, j, resizeactive, 0 50
-bind = $mainMod CTRL, k, resizeactive, 0 -50
-bind = $mainMod CTRL, l, resizeactive, 50 0
-bind = $mainMod CTRL, left, resizeactive, -10 0
-bind = $mainMod CTRL, down, resizeactive, 0 10
-bind = $mainMod CTRL, up, resizeactive, 0 -10
-bind = $mainMod CTRL, right, resizeactive, 10 0
+hl.bind(mainMod .. " + CTRL + H", hl.dsp.window.resize({ x = -50 }))      -- bind = $mainMod CTRL, h, resizeactive, -50 0
+hl.bind(mainMod .. " + CTRL + J", hl.dsp.window.resize({ y =  50 }))      -- bind = $mainMod CTRL, j, resizeactive, 0 50
+hl.bind(mainMod .. " + CTRL + K", hl.dsp.window.resize({ y = -50 }))      -- bind = $mainMod CTRL, k, resizeactive, 0 -50
+hl.bind(mainMod .. " + CTRL + L", hl.dsp.window.resize({ x =  50 }))      -- bind = $mainMod CTRL, l, resizeactive, 50 0
+hl.bind(mainMod .. " + CTRL + left",  hl.dsp.window.resize({ x = -10 }))  -- bind = $mainMod CTRL, left, resizeactive, -10 0
+hl.bind(mainMod .. " + CTRL + down",  hl.dsp.window.resize({ y =  10 }))  -- bind = $mainMod CTRL, down, resizeactive, 0 10
+hl.bind(mainMod .. " + CTRL + up",    hl.dsp.window.resize({ y = -10 }))  -- bind = $mainMod CTRL, up, resizeactive, 0 -10
+hl.bind(mainMod .. " + CTRL + right", hl.dsp.window.resize({ x =  10 }))  -- bind = $mainMod CTRL, right, resizeactive, 10 0
 
 -- Move Windows
-bind = $mainMod SHIFT, H, movewindoworgroup, l
-bind = $mainMod SHIFT, J, movewindoworgroup, d
-bind = $mainMod SHIFT, K, movewindoworgroup, u
-bind = $mainMod SHIFT, L, movewindoworgroup, r
+hl.bind(mainMod .. " + H", hl.dsp.window.move({ direction = "left"  }))  -- bind = $mainMod SHIFT, H, movewindoworgroup, l
+hl.bind(mainMod .. " + J", hl.dsp.window.move({ direction = "down"  }))  -- bind = $mainMod SHIFT, J, movewindoworgroup, d
+hl.bind(mainMod .. " + K", hl.dsp.window.move({ direction = "up"    }))  -- bind = $mainMod SHIFT, K, movewindoworgroup, u
+hl.bind(mainMod .. " + L", hl.dsp.window.move({ direction = "right" }))  -- bind = $mainMod SHIFT, L, movewindoworgroup, r
 
 -- Switch workspaces with mainMod + [0-9]
-bind = $mainMod, 1, workspace, 1
-bind = $mainMod, 2, workspace, 2
-bind = $mainMod, 3, workspace, 3
-bind = $mainMod, 4, workspace, 4
-bind = $mainMod, 5, workspace, 5
-bind = $mainMod, 6, workspace, 6
-bind = $mainMod, 7, workspace, 7
-bind = $mainMod, 8, workspace, 8
-bind = $mainMod, 9, workspace, 9
-bind = $mainMod, 0, workspace, 10
+-- Move active window to a workspace with mainMod + SHIFT + [0-9]
+for i = 1, 10 do
+	local key = i % 10  -- 10 maps to key 0
+
+	hl.bind(mainMod .. " + " .. key,         hl.dsp.focus({ workspace = i }))
+	hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
+end
+
+-- Switch workspaces with mainMod + [0-9]
+-- bind = $mainMod, 1, workspace, 1
+-- bind = $mainMod, 2, workspace, 2
+-- bind = $mainMod, 3, workspace, 3
+-- bind = $mainMod, 4, workspace, 4
+-- bind = $mainMod, 5, workspace, 5
+-- bind = $mainMod, 6, workspace, 6
+-- bind = $mainMod, 7, workspace, 7
+-- bind = $mainMod, 8, workspace, 8
+-- bind = $mainMod, 9, workspace, 9
+-- bind = $mainMod, 0, workspace, 10
 
 -- Move active window to a workspace with mainMod + SHIFT + [0-9]
-bind = $mainMod SHIFT, 1, movetoworkspace, 1
-bind = $mainMod SHIFT, 2, movetoworkspace, 2
-bind = $mainMod SHIFT, 3, movetoworkspace, 3
-bind = $mainMod SHIFT, 4, movetoworkspace, 4
-bind = $mainMod SHIFT, 5, movetoworkspace, 5
-bind = $mainMod SHIFT, 6, movetoworkspace, 6
-bind = $mainMod SHIFT, 7, movetoworkspace, 7
-bind = $mainMod SHIFT, 8, movetoworkspace, 8
-bind = $mainMod SHIFT, 9, movetoworkspace, 9
-bind = $mainMod SHIFT, 0, movetoworkspace, 10
+-- bind = $mainMod SHIFT, 1, movetoworkspace, 1
+-- bind = $mainMod SHIFT, 2, movetoworkspace, 2
+-- bind = $mainMod SHIFT, 3, movetoworkspace, 3
+-- bind = $mainMod SHIFT, 4, movetoworkspace, 4
+-- bind = $mainMod SHIFT, 5, movetoworkspace, 5
+-- bind = $mainMod SHIFT, 6, movetoworkspace, 6
+-- bind = $mainMod SHIFT, 7, movetoworkspace, 7
+-- bind = $mainMod SHIFT, 8, movetoworkspace, 8
+-- bind = $mainMod SHIFT, 9, movetoworkspace, 9
+-- bind = $mainMod SHIFT, 0, movetoworkspace, 10
 
 -- Window actions
-bind = $mainMod, V, togglefloating,
-bind = $mainMod SHIFT, Q, killactive,
-bind = $mainMod, F, fullscreen,
-bind = CTRL, print, exec, screenshot 0
-bind = , print, exec, screenshot 1
-bind = SHIFT, print, exec, screenshot 2
+hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))             -- bind = $mainMod, V, togglefloating,
+hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen_state({ action = "toggle" }))  -- bind = $mainMod, F, fullscreen,
+hl.bind("CTRL + print", hl.exec_cmd("screenshot 0"))                               -- bind = CTRL, print, exec, screenshot 0
+hl.bind("print", hl.exec_cmd("screenshot 1"))                                      -- bind = , print, exec, screenshot 1
+hl.bind("SHIFT + print", hl.exec_cmd("screenshot 2"))                              -- bind = SHIFT, print, exec, screenshot 2
 
 -- Example special workspace (scratchpad)
-bind = CTRL, code:49, togglespecialworkspace, magic
-bind = $mainMod CTRL, code:49, movetoworkspace, special:magic
+hl.bind(mainMod .. " + code:49",        hl.dsp.workspace.toggle_special("magic"))              -- bind = CTRL, code:49, togglespecialworkspace, magic
+hl.bind(mainMod .. " + CTRL + code:49", hl.dsp.window.move({ workspace = "special:magic" }))   -- bind = $mainMod CTRL, code:49, movetoworkspace, special:magic
 
 -- Move/resize windows with mainMod + LMB/RMB and dragging
-bindm = $mainMod, mouse:272, movewindow
-bindm = $mainMod, mouse:273, resizewindow
+hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })  -- bindm = $mainMod, mouse:272, movewindow
+hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })  -- bindm = $mainMod, mouse:273, resizewindow
 
 -- Laptop multimedia keys for volume and LCD brightness
 bindel = $mainMod, mouse_down, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 1%+
@@ -363,14 +382,31 @@ bindel = ,XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
 bindel = ,XF86MonBrightnessUp, exec, brightnessctl -e4 -n2 set 5%+
 bindel = ,XF86MonBrightnessDown, exec, brightnessctl -e4 -n2 set 5%-
 
+-- Laptop multimedia keys for volume and LCD brightness
+hl.bind(mainMod .. " + mouse_down", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), { locked = true, repeating = true })
+hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), { locked = true, repeating = true })
+hl.bind(mainMod .. " + mouse_up", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),      { locked = true, repeating = true })
+hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),      { locked = true, repeating = true })
+hl.bind("XF86AudioMute",        hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"),     { locked = true, repeating = true })
+hl.bind("XF86AudioMicMute",     hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),   { locked = true, repeating = true })
+hl.bind("XF86MonBrightnessUp",  hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+"),                  { locked = true, repeating = true })
+hl.bind("XF86MonBrightnessDown",hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-"),                  { locked = true, repeating = true })
+
+-- Requires mpd, mpc, mpdn, ffmpeg
+hl.bind("XF86AudioNext",  hl.dsp.exec_cmd("mpdn -n"), { locked = true })
+hl.bind(mainMod .. " + N",  hl.dsp.exec_cmd("mpdn -n"), { locked = true })  -- bind = $mainMod, N, exec, mpdn -n 
+hl.bind(mainMod .. " + mouse:276",  hl.dsp.exec_cmd("mpdn -n"), { locked = true })  -- bind = $mainMod, mouse:276, exec, mpdn -n
+hl.bind("XF86AudioPause", hl.dsp.exec_cmd("mpdn -P"), { locked = true })
+hl.bind("XF86AudioPlay",  hl.dsp.exec_cmd("mpdn -P"), { locked = true })
+hl.bind(mainMod .. " + space",  hl.dsp.exec_cmd("mpdn -P"), { locked = true })  -- bind = $mainMod, SPACE, exec, mpdn -P
+hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("mpdn -p"), { locked = true })
+hl.bind(mainMod .. " + P",  hl.dsp.exec_cmd("mpdn -p"), { locked = true })  -- bind = $mainMod, P, exec, mpdn -p
+hl.bind(mainMod .. " + mouse:275",  hl.dsp.exec_cmd("mpdn -p"), { locked = true })  -- bind = $mainMod, mouse:275, exec, mpdn -p
+hl.bind(mainMod .. " + M",  hl.dsp.exec_cmd("mpdn -k"), { locked = true })  -- bind = $mainMod, M, exec, mpdn -k
+
 -- Play / Pause mpd ( [mpd_notify](https://github.com/briskbear/mpd_notify) )
-bind = $mainMod, SPACE, exec, mpdn -P
-bind = , code:172, exec, mpdn -P
-bind = $mainMod, M, exec, mpdn -k
-bind = $mainMod, mouse:276, exec, mpdn -n
-bind = $mainMod, mouse:275, exec, mpdn -p
-bind = $mainMod, N, exec, mpdn -n 
-bind = $mainMod, P, exec, mpdn -p
+-- bind = , code:172, exec, mpdn -P
+
 
 --#############################
 --## WINDOWS AND WORKSPACES ###
