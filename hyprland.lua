@@ -36,9 +36,10 @@ require('monitors')
 -- See https://wiki.hypr.land/Configuring/Keywords/
 
 -- Set programs that you use
-local terminal    = "st"
 local fileManager = "pcmanfm"
+local mainMod     = "SUPER" -- Sets "Windows" key as main modifier
 local menu        = "rofi -show drun"
+local terminal    = "st"
 local webBrowser  = "brave"
 
 -----------------
@@ -269,11 +270,9 @@ hl.device({
 })
 
 
---##################
---## KEYBINDINGS ###
---##################
-
-$mainMod = SUPER # Sets "Windows" key as main modifier
+-------------------
+--- KEYBINDINGS ---
+-------------------
 
 bind = $mainMod, Return, exec, $terminal
 bind = $mainMod, B, exec, $webBrowser
