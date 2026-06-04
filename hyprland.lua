@@ -275,16 +275,6 @@ hl.device({
 --- KEYBINDINGS ---
 -------------------
 
-
--- bind = $mainMod, Return, exec, $terminal
--- bind = $mainMod, B, exec, $webBrowser
--- bind = $mainMod, E, exec, $fileManager
--- bind = $mainMod, D, exec, $menu
--- bind = $mainMod, R, exec, rofi -show run
--- bind = $mainMod SHIFT, P, exec, eww open power_menu
--- bind = $mainMod SHIFT, x, exec, $HOME/.local/bin/lock
--- bind = $mainMod, mouse:274, exec, dunst-playback
-
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + B",      hl.dsp.exec_cmd(webBrowser))
 hl.bind(mainMod .. " + E",      hl.dsp.exec_cmd(fileManager))
@@ -333,30 +323,6 @@ for i = 1, 10 do
 	hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
 end
 
--- Switch workspaces with mainMod + [0-9]
--- bind = $mainMod, 1, workspace, 1
--- bind = $mainMod, 2, workspace, 2
--- bind = $mainMod, 3, workspace, 3
--- bind = $mainMod, 4, workspace, 4
--- bind = $mainMod, 5, workspace, 5
--- bind = $mainMod, 6, workspace, 6
--- bind = $mainMod, 7, workspace, 7
--- bind = $mainMod, 8, workspace, 8
--- bind = $mainMod, 9, workspace, 9
--- bind = $mainMod, 0, workspace, 10
-
--- Move active window to a workspace with mainMod + SHIFT + [0-9]
--- bind = $mainMod SHIFT, 1, movetoworkspace, 1
--- bind = $mainMod SHIFT, 2, movetoworkspace, 2
--- bind = $mainMod SHIFT, 3, movetoworkspace, 3
--- bind = $mainMod SHIFT, 4, movetoworkspace, 4
--- bind = $mainMod SHIFT, 5, movetoworkspace, 5
--- bind = $mainMod SHIFT, 6, movetoworkspace, 6
--- bind = $mainMod SHIFT, 7, movetoworkspace, 7
--- bind = $mainMod SHIFT, 8, movetoworkspace, 8
--- bind = $mainMod SHIFT, 9, movetoworkspace, 9
--- bind = $mainMod SHIFT, 0, movetoworkspace, 10
-
 -- Window actions
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))             -- bind = $mainMod, V, togglefloating,
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen_state({ action = "toggle" }))  -- bind = $mainMod, F, fullscreen,
@@ -371,16 +337,6 @@ hl.bind(mainMod .. " + CTRL + code:49", hl.dsp.window.move({ workspace = "specia
 -- Move/resize windows with mainMod + LMB/RMB and dragging
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })  -- bindm = $mainMod, mouse:272, movewindow
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })  -- bindm = $mainMod, mouse:273, resizewindow
-
--- Laptop multimedia keys for volume and LCD brightness
-bindel = $mainMod, mouse_down, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 1%+
-bindel = $mainMod, mouse_up, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%-
-bindel = ,XF86AudioRaiseVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+
-bindel = ,XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
-bindel = ,XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
-bindel = ,XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
-bindel = ,XF86MonBrightnessUp, exec, brightnessctl -e4 -n2 set 5%+
-bindel = ,XF86MonBrightnessDown, exec, brightnessctl -e4 -n2 set 5%-
 
 -- Laptop multimedia keys for volume and LCD brightness
 hl.bind(mainMod .. " + mouse_down", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), { locked = true, repeating = true })
@@ -412,32 +368,37 @@ hl.bind(mainMod .. " + M",  hl.dsp.exec_cmd("mpdn -k"), { locked = true })  -- b
 --## WINDOWS AND WORKSPACES ###
 --#############################
 
-bind = $mainMod, left,  movecurrentworkspacetomonitor, -1
-bind = $mainMod, right, movecurrentworkspacetomonitor, +1
+hl.bind(mainMod .. " + left",  hl.dsp.window.move({ monitor = 0 }))
+hl.bind(mainMod .. " + up",    hl.dsp.window.move({ monitor = 1 }))
+hl.bind(mainMod .. " + right", hl.dsp.window.move({ monitor = 2 }))
+-- bind = $mainMod, left,  movecurrentworkspacetomonitor, -1
+-- bind = $mainMod, right, movecurrentworkspacetomonitor, +1
 
 -- Example windowrules that are useful
 
 
-windowrule {
-    # Ignore maximize requests from all apps. You'll probably like this.
-    name = suppress-maximize-events
-    match:class = .*
+hl.window_rule({
+    -- Ignore maximize requests from all apps. You'll probably like this.
+    name = "suppress-maximize-events",
+    match = { class = ".*" },
 
-    suppress_event = maximize
-}
+    suppress_event = "maximize",
+})
 
-windowrule {
-    # Fix some dragging issues with XWayland
-    name             = fix-xwayland-drags
+hl.window_rule({
+    -- Fix some dragging issues with XWayland
+    name             = "fix-xwayland-drags",
 
-    match:class      = ^$
-    match:title      = ^$
-    match:xwayland   = true
-    match:float      = true
-    match:fullscreen = false
-    match:pin        = false
+	match = {
+		class      = "^$",
+      title      = "^$",
+      xwayland   = true,
+      float      = true,
+      fullscreen = false,
+      pin        = false,
+	},
 
-    no_focus         = true
-}
+    no_focus         = true,
+})
 
-source = $XH/hypr/config.d/windowrules.conf
+require('windowrules') -- source = $XH/hypr/config.d/windowrules.conf
