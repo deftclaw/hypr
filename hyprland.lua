@@ -3,6 +3,8 @@
 -----------------------------
 
 -- See https://wiki.hypr.land/Configuring/Environment-variables/
+package.path = package.path .. ";./config.d/?.lua"  -- NOTE: Allow loading configuration files from config.d, by name
+
 
 hl.env('NVD_BACKEND', 'direct')
 hl.env('LIBVA_DRIVER_NAME', 'nvidia')
@@ -26,11 +28,7 @@ hl.env('XCURSOR_THEME', 'Empty')
 --## MONITORS ###
 --###############
 
--- See https://wiki.hypr.land/Configuring/Monitors/
-monitor=,preferred,auto,auto
-monitor = DP-4, 3840x2160@60.00Hz, 1200x0, 1
-monitor = DP-5, 1920x1200, 5040x0, 1, transform, 1
-monitor = DP-7, 1920x1200, 0x0, 1, transform, 3
+require('monitors')
 
 --##################
 --## MY PROGRAMS ###
