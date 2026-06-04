@@ -37,10 +37,10 @@ require('monitors')
 -- See https://wiki.hypr.land/Configuring/Keywords/
 
 -- Set programs that you use
-$terminal    = /usr/local/bin/st
-$fileManager = pcmanfm
-$menu        = rofi -show drun
-$webBrowser  = /usr/bin/brave
+local terminal    = "st"
+local fileManager = "pcmanfm"
+local menu        = "rofi -show drun"
+local webBrowser  = "brave"
 
 --################
 --## AUTOSTART ###
