@@ -4,13 +4,22 @@
 
 -- See https://wiki.hypr.land/Configuring/Environment-variables/
 
-env = NVD_BACKEND,direct
-env = LIBVA_DRIVER_NAME,nvidia
-env = __GLX_VENDOR_LIBRARY_NAME,nvidia
-env = XCURSOR_SIZE,24
-env = HYPRCURSOR_SIZE,24
-env = HYPRCURSOR_THEME,Empty-Butterfly-Yellow-vr2
-env = XCURSOR_THEME,Empty-Butterfly-Yellow-vr2
+hl.env('NVD_BACKEND', 'direct')
+hl.env('LIBVA_DRIVER_NAME', 'nvidia')
+hl.env('__GLX_VENDOR_LIBRARY_NAME', 'nvidia')
+
+hl.env('HYPRCURSOR_SIZE', '24')
+hl.env('HYPRCURSOR_THEME', 'Empty')
+hl.env('XCURSOR_SIZE', '24')
+hl.env('XCURSOR_THEME', 'Empty')
+
+-- env = NVD_BACKEND,direct
+-- env = LIBVA_DRIVER_NAME,nvidia
+-- env = __GLX_VENDOR_LIBRARY_NAME,nvidia
+-- env = XCURSOR_SIZE,24
+-- env = HYPRCURSOR_SIZE,24
+-- env = HYPRCURSOR_THEME,Empty-Butterfly-Yellow-vr2
+-- env = XCURSOR_THEME,Empty-Butterfly-Yellow-vr2
 
 
 --###############
