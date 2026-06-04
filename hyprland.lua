@@ -5,7 +5,6 @@
 -- See https://wiki.hypr.land/Configuring/Environment-variables/
 package.path = package.path .. ";./config.d/?.lua"  -- NOTE: Allow loading configuration files from config.d, by name
 
-
 hl.env('NVD_BACKEND', 'direct')
 hl.env('LIBVA_DRIVER_NAME', 'nvidia')
 hl.env('__GLX_VENDOR_LIBRARY_NAME', 'nvidia')
@@ -24,15 +23,15 @@ hl.env('XCURSOR_THEME', 'Empty')
 -- env = XCURSOR_THEME,Empty-Butterfly-Yellow-vr2
 
 
---###############
---## MONITORS ###
---###############
+----------------
+--- MONITORS ---
+----------------
 
 require('monitors')
 
---##################
---## MY PROGRAMS ###
---##################
+-------------------
+--- MY PROGRAMS ---
+-------------------
 
 -- See https://wiki.hypr.land/Configuring/Keywords/
 
