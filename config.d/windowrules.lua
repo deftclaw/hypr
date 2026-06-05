@@ -75,7 +75,7 @@ hl.window_rule({
 
 	float       = true,
 	match = {
-		class = org.keepassxc.KeePassXC
+		class = "org.keepassxc.KeePassXC",
 	},
 
 	move        = "1212 46",

@@ -22,8 +22,8 @@ hl.monitor({
 	output    = "DP-5",
 	mode      = "1920x1200",
 	position  = "5040x0",
-	scale     = "1",
-	transform = "1",
+	scale     = 1,
+	transform = 1,
 })
 
 -- Page: Left, FHD, 90deg --
@@ -31,6 +31,6 @@ hl.monitor({
 	output    = "DP-7",
 	mode      = "1920x1200",
 	position  = "0x0",
-	scale     = "1",
-	transform = "3",
+	scale     = 1,
+	transform = 3,
 })

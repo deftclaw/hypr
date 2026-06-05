@@ -3,7 +3,6 @@
 -----------------------------
 
 -- See https://wiki.hypr.land/Configuring/Environment-variables/
-package.path = package.path .. ";./config.d/?.lua"  -- NOTE: Allow loading configuration files from config.d, by name
 
 hl.env('NVD_BACKEND', 'direct')
 hl.env('LIBVA_DRIVER_NAME', 'nvidia')
@@ -14,6 +13,7 @@ hl.env('HYPRCURSOR_THEME', 'Empty')
 hl.env('XCURSOR_SIZE', '24')
 hl.env('XCURSOR_THEME', 'Empty')
 
+
 -- env = NVD_BACKEND,direct
 -- env = LIBVA_DRIVER_NAME,nvidia
 -- env = __GLX_VENDOR_LIBRARY_NAME,nvidia
@@ -23,12 +23,6 @@ hl.env('XCURSOR_THEME', 'Empty')
 -- env = XCURSOR_THEME,Empty-Butterfly-Yellow-vr2
 
 
-----------------
---- MONITORS ---
-----------------
-
-require('monitors')
-
 -------------------
 --- MY PROGRAMS ---
 -------------------
@@ -36,12 +30,24 @@ require('monitors')
 -- See https://wiki.hypr.land/Configuring/Keywords/
 
 -- Set programs that you use
-local closeWindowBind  = hl.bind(mainMod .. " + Q", hl.dsp.window.close())
-local fileManager      = "pcmanfm"
 local mainMod          = "SUPER" -- Sets "Windows" key as main modifier
+
+local closeWindowBind  = hl.bind(mainMod .. "+ SHIFT + Q", hl.dsp.window.close())
+local fileManager      = "pcmanfm"
 local menu             = "rofi -show drun"
 local terminal         = "st"
 local webBrowser       = "brave"
+
+local xdg_home = os.getenv("XDG_CONFIG_HOME")
+
+package.path = package.path .. ";" .. xdg_home .. "/hypr/config.d/?.lua"  -- NOTE: Allow loading configuration files from config.d, by name
+
+
+----------------
+--- MONITORS ---
+----------------
+
+require('monitors')
 
 -----------------
 --- AUTOSTART ---
@@ -289,8 +295,8 @@ hl.bind(mainMod .. " + T",   hl.dsp.group.toggle())         -- bind = $mainMod, 
 hl.bind(mainMod .. " + TAB", hl.dsp.layout("togglesplit"))  -- bind = $mainMod, TAB, layout, togglesplit  # dwindle
 
 -- Move to the other members of an active group --
-hl.bind(mainMod .. " + H", hl.dsp.group.prev())  -- bind = $mainMod ALT, h, changegroupactive, b
-hl.bind(mainMod .. " + L", hl.dsp.group.next())  -- bind = $mainMod ALT, l, changegroupactive, f
+hl.bind(mainMod .. " + ALT + H", hl.dsp.group.prev())  -- bind = $mainMod ALT, h, changegroupactive, b
+hl.bind(mainMod .. " + ALT + L", hl.dsp.group.next())  -- bind = $mainMod ALT, l, changegroupactive, f
 
 -- Move focus with mainMod + vim directions
 hl.bind(mainMod .. " + L", hl.dsp.focus({ direction = "right" }))  -- bind = $mainMod, l, movefocus, r
@@ -299,20 +305,20 @@ hl.bind(mainMod .. " + K", hl.dsp.focus({ direction = "up"    }))  -- bind = $ma
 hl.bind(mainMod .. " + J", hl.dsp.focus({ direction = "down"  }))  -- bind = $mainMod, j, movefocus, d
 
 -- Resize Windows with mod+ctl [h, j, k, l]
-hl.bind(mainMod .. " + CTRL + H", hl.dsp.window.resize({ x = -50 }))      -- bind = $mainMod CTRL, h, resizeactive, -50 0
-hl.bind(mainMod .. " + CTRL + J", hl.dsp.window.resize({ y =  50 }))      -- bind = $mainMod CTRL, j, resizeactive, 0 50
-hl.bind(mainMod .. " + CTRL + K", hl.dsp.window.resize({ y = -50 }))      -- bind = $mainMod CTRL, k, resizeactive, 0 -50
-hl.bind(mainMod .. " + CTRL + L", hl.dsp.window.resize({ x =  50 }))      -- bind = $mainMod CTRL, l, resizeactive, 50 0
-hl.bind(mainMod .. " + CTRL + left",  hl.dsp.window.resize({ x = -10 }))  -- bind = $mainMod CTRL, left, resizeactive, -10 0
-hl.bind(mainMod .. " + CTRL + down",  hl.dsp.window.resize({ y =  10 }))  -- bind = $mainMod CTRL, down, resizeactive, 0 10
-hl.bind(mainMod .. " + CTRL + up",    hl.dsp.window.resize({ y = -10 }))  -- bind = $mainMod CTRL, up, resizeactive, 0 -10
-hl.bind(mainMod .. " + CTRL + right", hl.dsp.window.resize({ x =  10 }))  -- bind = $mainMod CTRL, right, resizeactive, 10 0
+hl.bind(mainMod .. " + CTRL + H", hl.dsp.window.resize({ x = -50, y = 0, relative = true }))      -- bind = $mainMod CTRL, h, resizeactive, -50 0
+hl.bind(mainMod .. " + CTRL + J", hl.dsp.window.resize({ x = 0, y =  50, relative = true }))      -- bind = $mainMod CTRL, j, resizeactive, 0 50
+hl.bind(mainMod .. " + CTRL + K", hl.dsp.window.resize({ x = 0, y = -50, relative = true }))      -- bind = $mainMod CTRL, k, resizeactive, 0 -50
+hl.bind(mainMod .. " + CTRL + L", hl.dsp.window.resize({ x =  50, y = 0, relative = true }))      -- bind = $mainMod CTRL, l, resizeactive, 50 0
+hl.bind(mainMod .. " + CTRL + left",  hl.dsp.window.resize({ x = -10, y = 0, relative = true }))  -- bind = $mainMod CTRL, left, resizeactive, -10 0
+hl.bind(mainMod .. " + CTRL + down",  hl.dsp.window.resize({ x = 0, y =  10, relative = true }))  -- bind = $mainMod CTRL, down, resizeactive, 0 10
+hl.bind(mainMod .. " + CTRL + up",    hl.dsp.window.resize({ x = 0, y = -10, relative = true }))  -- bind = $mainMod CTRL, up, resizeactive, 0 -10
+hl.bind(mainMod .. " + CTRL + right", hl.dsp.window.resize({ x =  10, y = 0, relative = true }))  -- bind = $mainMod CTRL, right, resizeactive, 10 0
 
 -- Move Windows
-hl.bind(mainMod .. " + H", hl.dsp.window.move({ direction = "left"  }))  -- bind = $mainMod SHIFT, H, movewindoworgroup, l
-hl.bind(mainMod .. " + J", hl.dsp.window.move({ direction = "down"  }))  -- bind = $mainMod SHIFT, J, movewindoworgroup, d
-hl.bind(mainMod .. " + K", hl.dsp.window.move({ direction = "up"    }))  -- bind = $mainMod SHIFT, K, movewindoworgroup, u
-hl.bind(mainMod .. " + L", hl.dsp.window.move({ direction = "right" }))  -- bind = $mainMod SHIFT, L, movewindoworgroup, r
+hl.bind(mainMod .. " + SHIFT + H", hl.dsp.window.move({ direction = "left"  }))  -- bind = $mainMod SHIFT, H, movewindoworgroup, l
+hl.bind(mainMod .. " + SHIFT + J", hl.dsp.window.move({ direction = "down"  }))  -- bind = $mainMod SHIFT, J, movewindoworgroup, d
+hl.bind(mainMod .. " + SHIFT + K", hl.dsp.window.move({ direction = "up"    }))  -- bind = $mainMod SHIFT, K, movewindoworgroup, u
+hl.bind(mainMod .. " + SHIFT + L", hl.dsp.window.move({ direction = "right" }))  -- bind = $mainMod SHIFT, L, movewindoworgroup, r
 
 -- Switch workspaces with mainMod + [0-9]
 -- Move active window to a workspace with mainMod + SHIFT + [0-9]
@@ -325,10 +331,10 @@ end
 
 -- Window actions
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))             -- bind = $mainMod, V, togglefloating,
-hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen_state({ action = "toggle" }))  -- bind = $mainMod, F, fullscreen,
-hl.bind("CTRL + print", hl.exec_cmd("screenshot 0"))                               -- bind = CTRL, print, exec, screenshot 0
-hl.bind("print", hl.exec_cmd("screenshot 1"))                                      -- bind = , print, exec, screenshot 1
-hl.bind("SHIFT + print", hl.exec_cmd("screenshot 2"))                              -- bind = SHIFT, print, exec, screenshot 2
+hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ action = "toggle" }))  -- bind = $mainMod, F, fullscreen,
+hl.bind("CTRL + print", hl.dsp.exec_cmd("screenshot 0"))                               -- bind = CTRL, print, exec, screenshot 0
+hl.bind("print", hl.dsp.exec_cmd("screenshot 1"))                                      -- bind = , print, exec, screenshot 1
+hl.bind("SHIFT + print", hl.dsp.exec_cmd("screenshot 2"))                              -- bind = SHIFT, print, exec, screenshot 2
 
 -- Example special workspace (scratchpad)
 hl.bind(mainMod .. " + code:49",        hl.dsp.workspace.toggle_special("magic"))              -- bind = CTRL, code:49, togglespecialworkspace, magic
@@ -368,9 +374,9 @@ hl.bind(mainMod .. " + M",  hl.dsp.exec_cmd("mpdn -k"), { locked = true })  -- b
 --## WINDOWS AND WORKSPACES ###
 --#############################
 
-hl.bind(mainMod .. " + left",  hl.dsp.window.move({ monitor = 0 }))
-hl.bind(mainMod .. " + up",    hl.dsp.window.move({ monitor = 1 }))
-hl.bind(mainMod .. " + right", hl.dsp.window.move({ monitor = 2 }))
+hl.bind(mainMod .. " + left",  hl.dsp.workspace.move({ monitor = 2 }))
+hl.bind(mainMod .. " + up",    hl.dsp.workspace.move({ monitor = 0 }))
+hl.bind(mainMod .. " + right", hl.dsp.workspace.move({ monitor = 1 }))
 -- bind = $mainMod, left,  movecurrentworkspacetomonitor, -1
 -- bind = $mainMod, right, movecurrentworkspacetomonitor, +1
 
